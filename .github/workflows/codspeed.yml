@@ -33,3 +33,5 @@ jobs:
       - name: Run benchmarks
         run: |
           $HOME/.cargo/bin/codspeed-runner --token token "python3 -m pytest tests/ --codspeed"
+        env:
+          CODSPEED_LOG: trace
