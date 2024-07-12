@@ -32,7 +32,7 @@ jobs:
           # install rust
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           # install codspeed
-          cargo install --git https://github.com/CodSpeedHQ/runner --branch 07-12-chore_add_error_chain_debug
+          $HOME/.cargo/bin/cargo install --git https://github.com/CodSpeedHQ/runner --branch 07-12-chore_add_error_chain_debug
 
       # - name : Install codspeed
       #   run: curl -fsSL https://github.com/CodSpeedHQ/runner/releases/download/v2.4.2/codspeed-runner-installer.sh | bash -s
