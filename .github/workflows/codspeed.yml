@@ -27,19 +27,13 @@ jobs:
       - name: Install package
         run: python3 -m pip install -e .[benchmark]
 
-      # !!! IMPORTANT - DO NOT MERGE THIS
-      - name: Tmate Session
-        if: always()
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 60
-
       - name : Install codspeed from source
         run: |
           # install rust
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           source $HOME/.cargo/env
           # install codspeed
-          cargo install https://github.com/CodSpeedHQ/runner --branch 07-12-chore_add_error_chain_debug
+          cargo install --git https://github.com/CodSpeedHQ/runner --branch 07-12-chore_add_error_chain_debug
 
       # - name : Install codspeed
       #   run: curl -fsSL https://github.com/CodSpeedHQ/runner/releases/download/v2.4.2/codspeed-runner-installer.sh | bash -s
