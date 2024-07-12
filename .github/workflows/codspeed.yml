@@ -30,6 +30,12 @@ jobs:
       - name : Install codspeed
         run: curl -fsSL https://github.com/CodSpeedHQ/runner/releases/download/v2.4.2/codspeed-runner-installer.sh | bash -s
 
+      # !!! IMPORTANT - DO NOT MERGE THIS
+      - name: Tmate Session
+        if: always()
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 60
+
       - name: Run benchmarks
         run: |
           $HOME/.cargo/bin/codspeed-runner --token token "python3 -m pytest tests/ --codspeed"
