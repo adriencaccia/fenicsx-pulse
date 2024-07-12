@@ -1,0 +1,47 @@
+name: codspeed-benchmarks
+
+on:
+  push:
+    branches:
+      - "main" # or "master"
+  pull_request:
+  # `workflow_dispatch` allows CodSpeed to trigger backtest
+  # performance analysis in order to generate initial data.
+  workflow_dispatch:
+
+jobs:
+  benchmarks:
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/fenics/dolfinx/dolfinx:v0.8.0
+      options: --privileged
+    env:
+      DEB_PYTHON_INSTALL_LAYOUT: deb_system
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install package needed by codspeed
+        run: apt-get update && apt-get install -y curl lsb-release
+
+      - name: Install package
+        run: python3 -m pip install -e .[benchmark]
+
+      - name : Install codspeed from source
+        run: |
+          # install rust
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          # install codspeed
+          $HOME/.cargo/bin/cargo install --git https://github.com/CodSpeedHQ/runner --branch 07-12-chore_add_error_chain_debug
+
+      # - name : Install codspeed
+      #   run: curl -fsSL https://github.com/CodSpeedHQ/runner/releases/download/v2.4.2/codspeed-runner-installer.sh | bash -s
+
+      - name: Fix git owner
+        run: git config --global --add safe.directory "*"
+
+      - name: Run benchmarks
+        run: |
+          $HOME/.cargo/bin/codspeed-runner --token token "python3 -m pytest tests/ --codspeed"
+        env:
+          CODSPEED_LOG: trace
