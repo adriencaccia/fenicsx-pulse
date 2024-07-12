@@ -31,7 +31,6 @@ jobs:
         run: |
           # install rust
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          source $HOME/.cargo/env
           # install codspeed
           cargo install --git https://github.com/CodSpeedHQ/runner --branch 07-12-chore_add_error_chain_debug
 
